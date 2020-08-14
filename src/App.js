@@ -16,6 +16,7 @@ const App = () => {
         <Navbar />
         <Switch>
           <Route path="/" exact component={Dashboard} />
+          <Route path="/:category" component={Dashboard} />
           <Route path="/post/:id" component={Post} />
           <Route path="/create" component={CreatePost} />
         </Switch>

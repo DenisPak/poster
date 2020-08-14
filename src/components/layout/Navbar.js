@@ -22,7 +22,7 @@ import jsImg from "../../images/js-30.png";
 import firebaseImg from "../../images/firebase-30.png";
 import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLinks";
-
+import { setCategory } from "../../actions";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ auth }) => {
+const Navbar = ({ auth, setCategory }) => {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   const options = [
@@ -125,17 +125,24 @@ const Navbar = ({ auth }) => {
         <Divider />
         <List>
           {["HTML", "CSS", "JS", "React", "Firebase"].map((text) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                <img
-                  src={
-                    options.find((option) => option.optionName === text)
-                      .optionImg
-                  }
-                />
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
+            <Link
+              to={"/" + text}
+              style={{ textDecoration: "none", color: "#000" }}
+              key={text}
+              onClick={() => setOpen(false)}
+            >
+              <ListItem button>
+                <ListItemIcon>
+                  <img
+                    src={
+                      options.find((option) => option.optionName === text)
+                        .optionImg
+                    }
+                  />
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            </Link>
           ))}
         </List>
       </Drawer>
@@ -150,4 +157,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps, { setCategory })(Navbar);

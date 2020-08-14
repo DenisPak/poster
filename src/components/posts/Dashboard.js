@@ -5,7 +5,7 @@ import Paper from "@material-ui/core/Paper";
 
 import Notifications from "./Notifications";
 import PostList from "./PostList";
-const Dashboard = () => {
+const Dashboard = (props) => {
   return (
     <div>
       <Container maxWidth="md">
@@ -19,7 +19,10 @@ const Dashboard = () => {
           {/* <Paper elevation={0}>
             <Notifications />
           </Paper> */}
-          <PostList />
+          <PostList
+            category={props.match.params ? props.match.params.category : ""}
+            key={props.match.params ? props.match.params.category : ""}
+          />
         </Box>
       </Container>
     </div>

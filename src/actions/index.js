@@ -31,6 +31,13 @@ export const signOut = () => {
   };
 };
 
+export const setCategory = (category) => {
+  return {
+    type: "CATEGORY_CHANGED",
+    payload: category,
+  };
+};
+
 export const signUp = (newUser) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();

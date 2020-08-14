@@ -66,8 +66,14 @@ const Post = ({ post }) => {
               {post.title}
             </Typography>
 
-            <Typography component="p">{post.header}</Typography>
-            <img src={post.headerImg} alt="" className={classes.image} />
+            {post.header ? (
+              <pre style={{ whiteSpace: "pre-wrap" }}>
+                <Typography component="p">{post.header}</Typography>
+              </pre>
+            ) : null}
+            {post.headerImg ? (
+              <img src={post.headerImg} alt="" className={classes.image} />
+            ) : null}
             <pre style={{ whiteSpace: "pre-wrap" }}>
               <Typography component="p">{post.content}</Typography>
             </pre>

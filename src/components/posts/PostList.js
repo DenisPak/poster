@@ -4,17 +4,24 @@ import { useFirestoreConnect } from "react-redux-firebase";
 import { Link } from "react-router-dom";
 import PostSummary from "./PostSummary";
 
-const PostList = (props) => {
+const PostList = ({ posts, category }) => {
   useFirestoreConnect([
     { collection: "posts", orderBy: ["createdAt", "desc"] },
   ]);
-  console.log("");
+
+  if (category && posts) {
+    posts = posts.filter((post) => post.category.optionName === category);
+  }
+
+  console.log(posts);
   return (
     <>
-      {props.posts
-        ? props.posts.map((post) => {
-            return <PostSummary post={post} key={post.id} />;
-          })
+      {posts
+        ? category && !posts.length
+          ? "There are no posts in this category :(. Consider adding one yourself"
+          : posts.map((post) => {
+              return <PostSummary post={post} key={post.id} />;
+            })
         : null}
     </>
   );
