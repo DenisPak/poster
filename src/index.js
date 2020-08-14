@@ -30,6 +30,9 @@ const theme = createMuiTheme({
       fontWeight: 700,
     },
   },
+  zIndex: {
+    modal: 1000,
+  },
 });
 
 const store = createStore(

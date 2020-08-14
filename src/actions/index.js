@@ -49,6 +49,7 @@ export const signUp = (newUser) => {
           }
         );
       })
+      .then()
       .then(() => {
         dispatch({ type: "SIGNUP_SUCCESS" });
       })

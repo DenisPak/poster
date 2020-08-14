@@ -16,6 +16,7 @@ const useStyles = makeStyles({
   },
   meta: {
     fontSize: "14px",
+    cursor: "default",
   },
   summaryContent: {
     marginTop: "10px",
@@ -24,6 +25,9 @@ const useStyles = makeStyles({
   date: {
     marginLeft: "15px",
     cursor: "default",
+  },
+  category: {
+    marginRight: "15px",
   },
 });
 
@@ -34,11 +38,11 @@ const PostSummary = ({ post }) => {
       <Paper elevation={0}>
         <Box padding="20px 20px 10px 20px">
           <Typography className={classes.meta} component="p">
-            {post.category ? (
-              <>
+            {post.category.optionName ? (
+              <span className={classes.category}>
                 <img src={post.category.optionImg} />
                 {post.category.optionName}{" "}
-              </>
+              </span>
             ) : null}
             {`${post.authorFirstName} ${post.authorLastName} `}
             <span className={classes.date}>

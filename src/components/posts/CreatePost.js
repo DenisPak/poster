@@ -118,7 +118,7 @@ const CreatePost = (props) => {
       optionImg: "https://img.icons8.com/color/15/000000/html-5.png",
     },
     {
-      optionName: "Css",
+      optionName: "CSS",
       optionImg: "https://img.icons8.com/color/15/000000/css3.png",
     },
     {
@@ -139,7 +139,6 @@ const CreatePost = (props) => {
     e.preventDefault();
     createPost();
   };
-
   return (
     <Container maxWidth="lg" className={classes.container}>
       <Paper elevation={0} className={classes.paper}>
@@ -183,7 +182,9 @@ const CreatePost = (props) => {
                 )}
               />
               <Typography className={classes.meta} component="p">
-                dsad dsad
+                {props.auth.displayName
+                  ? props.auth.displayName
+                  : `${props.profile.firstName} ${props.profile.lastName}`}
                 <span className={classes.date}>
                   {`${moment().format("MMMM Do")} at ${moment().format(
                     "h:mm"
@@ -230,7 +231,7 @@ const CreatePost = (props) => {
               placeholder="Input header paragraph (optional)"
               value={header}
               onChange={(e) => setHeader(e.target.value)}
-              inputProps={{ maxLength: 120 }}
+              inputProps={{ maxLength: 180 }}
               InputProps={{
                 disableUnderline: true,
                 style: {
@@ -272,4 +273,11 @@ const CreatePost = (props) => {
   );
 };
 
-export default connect(null, { createPost })(CreatePost);
+const mapStateToProps = (state) => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile,
+  };
+};
+
+export default connect(mapStateToProps, { createPost })(CreatePost);

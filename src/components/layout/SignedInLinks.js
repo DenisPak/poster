@@ -24,12 +24,16 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     color: "white",
   },
+  createLink: {
+    color: "#fff",
+    textDecoration: "none",
+  },
 }));
 
 const SignedInLinks = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
+  const classes = useStyles();
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -45,7 +49,7 @@ const SignedInLinks = (props) => {
 
   return (
     <div>
-      <NavLink to="/create">
+      <NavLink className={classes.createLink} to="/create">
         <Button color="inherit">Create Post</Button>
       </NavLink>
 
@@ -59,7 +63,7 @@ const SignedInLinks = (props) => {
         <AccountCircle />
       </IconButton>
       <Menu
-        id="menu-appbar"
+        style={{ zIndex: 2000 }}
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: "top",

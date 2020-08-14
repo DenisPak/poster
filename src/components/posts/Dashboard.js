@@ -16,9 +16,9 @@ const Dashboard = () => {
           paddingTop="80px"
           textAlign="left"
         >
-          <Paper elevation={0}>
+          {/* <Paper elevation={0}>
             <Notifications />
-          </Paper>
+          </Paper> */}
           <PostList />
         </Box>
       </Container>
