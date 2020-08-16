@@ -7,6 +7,9 @@ import Container from "@material-ui/core/Container";
 import { connect } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
 import moment from "moment";
+
+import Comments from "./Comments";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     height: "100%",
@@ -17,17 +20,22 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("md")]: {
       borderRadius: 0,
     },
+  },
+  post: {
     paddingTop: "80px",
   },
   container: {
     minHeight: "100%",
-
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
     [theme.breakpoints.down("md")]: {
       padding: 0,
     },
   },
   content: {
     maxWidth: "850px",
+    width: "100%",
     [theme.breakpoints.down("md")]: {
       maxWidth: "700px",
     },
@@ -48,37 +56,44 @@ const Post = ({ post }) => {
   return (
     <Container maxWidth="lg" className={classes.container}>
       {post ? (
-        <Paper elevation={0} className={classes.paper}>
-          <div className={classes.content}>
-            <Typography className={classes.meta} component="p">
-              {post.category ? (
-                <>
-                  <img src={post.category.optionImg} />
-                  {post.category.optionName}{" "}
-                </>
-              ) : null}
-              {`${post.authorFirstName} ${post.authorLastName} `}
-              <span className={classes.date}>
-                {moment(post.createdAt.toDate()).calendar()}
-              </span>
-            </Typography>
-            <Typography component="h4" variant="h4">
-              {post.title}
-            </Typography>
+        <>
+          <Paper elevation={0} className={`${classes.paper} ${classes.post}`}>
+            <div className={classes.content}>
+              <Typography className={classes.meta} component="p">
+                {post.category ? (
+                  <>
+                    <img src={post.category.optionImg} />
+                    {post.category.optionName}{" "}
+                  </>
+                ) : null}
+                {`${post.authorFirstName} ${post.authorLastName} `}
+                <span className={classes.date}>
+                  {moment(post.createdAt.toDate()).calendar()}
+                </span>
+              </Typography>
+              <Typography component="h4" variant="h4">
+                {post.title}
+              </Typography>
 
-            {post.header ? (
+              {post.header ? (
+                <pre style={{ whiteSpace: "pre-wrap" }}>
+                  <Typography component="p">{post.header}</Typography>
+                </pre>
+              ) : null}
+              {post.headerImg ? (
+                <img src={post.headerImg} alt="" className={classes.image} />
+              ) : null}
               <pre style={{ whiteSpace: "pre-wrap" }}>
-                <Typography component="p">{post.header}</Typography>
+                <Typography component="p">{post.content}</Typography>
               </pre>
-            ) : null}
-            {post.headerImg ? (
-              <img src={post.headerImg} alt="" className={classes.image} />
-            ) : null}
-            <pre style={{ whiteSpace: "pre-wrap" }}>
-              <Typography component="p">{post.content}</Typography>
-            </pre>
-          </div>
-        </Paper>
+            </div>
+          </Paper>
+          <Paper elevation={0} className={classes.paper}>
+            <div className={classes.content}>
+              <Comments post={post} />
+            </div>
+          </Paper>
+        </>
       ) : (
         "wait"
       )}

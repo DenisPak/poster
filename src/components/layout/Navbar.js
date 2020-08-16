@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ auth, setCategory }) => {
+const Navbar = ({ auth, profile }) => {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   const options = [
@@ -126,7 +126,7 @@ const Navbar = ({ auth, setCategory }) => {
         <List>
           {["HTML", "CSS", "JS", "React", "Firebase"].map((text) => (
             <Link
-              to={"/" + text}
+              to={"/category/" + text}
               style={{ textDecoration: "none", color: "#000" }}
               key={text}
               onClick={() => setOpen(false)}
@@ -157,4 +157,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setCategory })(Navbar);
+export default connect(mapStateToProps)(Navbar);

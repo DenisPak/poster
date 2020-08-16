@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
+import IconButton from "@material-ui/core/IconButton";
+import { connect } from "react-redux";
+
+import { changeBookmark } from "../../actions";
+
 const useStyles = makeStyles({
   paper: {
     padding: "20px",
@@ -31,7 +38,22 @@ const useStyles = makeStyles({
   },
 });
 
-const PostSummary = ({ post }) => {
+const PostSummary = ({ post, changeBookmark, profile }) => {
+  const [bookmarked, setBookmarked] = useState(false);
+  useEffect(() => {
+    if (
+      profile.bookmarks &&
+      !bookmarked &&
+      profile.bookmarks.some((bookmark) => post.id == bookmark)
+    ) {
+      setBookmarked(true);
+    }
+  }, [profile.bookmarks]);
+
+  const onBookmarkedChange = () => {
+    setBookmarked(!bookmarked);
+    changeBookmark(!bookmarked, post.id);
+  };
   const classes = useStyles();
   return (
     <div>
@@ -67,9 +89,37 @@ const PostSummary = ({ post }) => {
             <img className={classes.image} src={post.headerImg} alt="dsd" />
           ) : null}
         </Link>
+        <Box padding="0 10px 10px 10px">
+          {bookmarked ? (
+            <IconButton
+              onClick={() => onBookmarkedChange()}
+              size="small"
+              color="primary"
+              aria-label="upload picture"
+              component="span"
+            >
+              <BookmarkIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              size="small"
+              aria-label="upload picture"
+              component="span"
+              onClick={() => onBookmarkedChange(true)}
+            >
+              <BookmarkBorderIcon />
+            </IconButton>
+          )}
+        </Box>
       </Paper>
     </div>
   );
 };
 
-export default PostSummary;
+const mapStateToProps = (state) => {
+  return {
+    profile: state.firebase.profile,
+  };
+};
+
+export default connect(mapStateToProps, { changeBookmark })(PostSummary);

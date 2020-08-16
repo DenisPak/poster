@@ -31,13 +31,6 @@ export const signOut = () => {
   };
 };
 
-export const setCategory = (category) => {
-  return {
-    type: "CATEGORY_CHANGED",
-    payload: category,
-  };
-};
-
 export const signUp = (newUser) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -53,10 +46,11 @@ export const signUp = (newUser) => {
             firstName: newUser.firstName,
             lastName: newUser.lastName,
             initials: newUser.firstName[0] + newUser.lastName[0],
+            bookmarks: [],
+            comments: [],
           }
         );
       })
-      .then()
       .then(() => {
         dispatch({ type: "SIGNUP_SUCCESS" });
       })
@@ -78,6 +72,8 @@ export const signInWithProvider = (user) => {
           initials:
             user.additionalUserInfo.profile.given_name[0] +
             user.additionalUserInfo.profile.family_name[0],
+          bookmarks: [],
+          comments: [],
         }
       )
       .then(() => dispatch({ type: "LOGIN_SUCCESS" }))
@@ -99,6 +95,7 @@ export const createPost = (post) => {
         authorLastName: profile.lastName,
         authorId: authorId,
         createdAt: new Date(),
+        comments: [],
       })
       .then(() => {
         dispatch({
@@ -114,3 +111,85 @@ export const createPost = (post) => {
       });
   };
 };
+
+export const addComment = (post, comment) => {
+  return (dispatch, getState, { getFirestore }) => {
+    const profile = getState().firebase.profile;
+    const firestore = getFirestore();
+    firestore
+      .update(
+        { collection: "posts", doc: post.id },
+        { comments: [...post.comments, comment] }
+      )
+      .then(() => {
+        return firestore.update(
+          { collection: "users", doc: comment.uid },
+          { comments: [...profile.comments, comment] }
+        );
+      })
+      .then(() => {
+        dispatch({
+          type: "COMMENT_ADDED",
+          comment,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: "COMMENT_ADD_ERROR",
+          err,
+        });
+      });
+  };
+};
+
+export const changeBookmark = (bookmarked, bookmarkId) => {
+  return (dispatch, getState, { getFirestore }) => {
+    const profile = getState().firebase.profile;
+    const uid = getState().firebase.auth.uid;
+    const firestore = getFirestore();
+    if (bookmarked) {
+      firestore
+        .update(
+          { collection: "users", doc: uid },
+          { bookmarks: [...profile.bookmarks, bookmarkId] }
+        )
+        .then(() => {
+          dispatch({
+            type: "BOOKMARK_ADDED",
+            bookmarkId,
+          });
+        })
+        .catch((err) => {
+          dispatch({
+            type: "BOOKMARK_ADDED_ERROR",
+            err,
+          });
+        });
+    } else {
+      firestore
+        .update(
+          { collection: "users", doc: uid },
+          {
+            bookmarks: [
+              ...profile.bookmarks.filter((bookmark) => bookmark != bookmarkId),
+            ],
+          }
+        )
+        .then(() => {
+          dispatch({
+            type: "BOOKMARK_ADDED",
+            bookmarkId,
+          });
+        })
+        .catch((err) => {
+          dispatch({
+            type: "BOOKMARK_ADDED_ERROR",
+            err,
+          });
+        });
+    }
+  };
+};
+// {
+//   bookmarks: [...profile.bookmarks, post.id];
+// }
