@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import firebase from "../../firebase";
 import SignIn from "../auth/SignIn";
 import SignUp from "../auth/SignUp";
-import { signInWithProvider, signIn } from "../../actions";
+import { signInWithProvider, openModal, closeModal } from "../../actions";
 
 const useStyles = makeStyles((theme) => ({
   modalPaper: {
@@ -56,18 +56,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignedOutLinks = (props) => {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [inForm, setInForm] = useState(false);
   const [upForm, setUpForm] = useState(false);
   const classes = useStyles();
-  const handleOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setInForm(false);
     setUpForm(false);
-    setOpen(false);
+    props.closeModal();
   };
 
   const handleBack = () => {
@@ -108,11 +105,11 @@ const SignedOutLinks = (props) => {
   );
   return (
     <div>
-      <Button color="inherit" onClick={handleOpen}>
+      <Button color="inherit" onClick={props.openModal}>
         Signin
       </Button>
       <Modal
-        open={open}
+        open={props.modalOpen}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
@@ -138,4 +135,14 @@ const SignedOutLinks = (props) => {
   );
 };
 
-export default connect(null, { signInWithProvider })(SignedOutLinks);
+const mapStateToProps = (state) => {
+  return {
+    modalOpen: state.modalOpen,
+  };
+};
+
+export default connect(mapStateToProps, {
+  signInWithProvider,
+  openModal,
+  closeModal,
+})(SignedOutLinks);

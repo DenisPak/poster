@@ -9,17 +9,18 @@ import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import IconButton from "@material-ui/core/IconButton";
 import { connect } from "react-redux";
+import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 
-import { changeBookmark } from "../../actions";
-
-const useStyles = makeStyles({
+import { changeBookmark, openModal } from "../../actions";
+import Comment from "./Comment";
+const useStyles = makeStyles((theme) => ({
   paper: {
     padding: "20px",
     display: "relative",
   },
   image: {
     width: "100%",
-    marginBottom: "20px",
+    marginTop: "10px",
   },
   meta: {
     fontSize: "14px",
@@ -36,17 +37,36 @@ const useStyles = makeStyles({
   category: {
     marginRight: "15px",
   },
-});
+  commentButton: {
+    display: "flex",
+    alignItems: "center",
+    marginTop: "2px",
+    marginRight: "10px",
+    gap: "5px",
+    color: "rgba(0, 0, 0, 0.54);",
+    "&:hover": {
+      color: theme.palette.primary.light,
+    },
+  },
+}));
 
-const PostSummary = ({ post, changeBookmark, profile }) => {
+const PostSummary = ({
+  post,
+  changeBookmark,
+  profile,
+  comment,
+  auth,
+  openModal,
+}) => {
   const [bookmarked, setBookmarked] = useState(false);
   useEffect(() => {
     if (
       profile.bookmarks &&
-      !bookmarked &&
       profile.bookmarks.some((bookmark) => post.id == bookmark)
     ) {
       setBookmarked(true);
+    } else {
+      setBookmarked(false);
     }
   }, [profile.bookmarks]);
 
@@ -58,7 +78,7 @@ const PostSummary = ({ post, changeBookmark, profile }) => {
   return (
     <div>
       <Paper elevation={0}>
-        <Box padding="20px 20px 10px 20px">
+        <Box padding="20px 20px 0 20px">
           <Typography className={classes.meta} component="p">
             {post.category.optionName ? (
               <span className={classes.category}>
@@ -71,12 +91,14 @@ const PostSummary = ({ post, changeBookmark, profile }) => {
               {moment(post.createdAt.toDate()).calendar()}
             </span>
           </Typography>
-          <Link to={"post/" + post.id} style={{ textDecoration: "none" }}>
+          <Link to={"/post/" + post.id} style={{ textDecoration: "none" }}>
             <Paper elevation={0}>
               <Typography component="h5" variant="h5">
                 {post.title}
               </Typography>
-              {post.header ? (
+              {comment ? (
+                <Comment comment={comment} />
+              ) : post.header ? (
                 <Typography className={classes.summaryContent} component="p">
                   {post.header}
                 </Typography>
@@ -84,33 +106,43 @@ const PostSummary = ({ post, changeBookmark, profile }) => {
             </Paper>
           </Link>
         </Box>
-        <Link to={"post/" + post.id}>
-          {post.headerImg ? (
-            <img className={classes.image} src={post.headerImg} alt="dsd" />
-          ) : null}
-        </Link>
-        <Box padding="0 10px 10px 10px">
-          {bookmarked ? (
-            <IconButton
-              onClick={() => onBookmarkedChange()}
-              size="small"
-              color="primary"
-              aria-label="upload picture"
-              component="span"
-            >
-              <BookmarkIcon />
-            </IconButton>
-          ) : (
-            <IconButton
-              size="small"
-              aria-label="upload picture"
-              component="span"
-              onClick={() => onBookmarkedChange(true)}
-            >
-              <BookmarkBorderIcon />
-            </IconButton>
-          )}
-        </Box>
+        {comment ? null : (
+          <Link to={"/post/" + post.id}>
+            {post.headerImg ? (
+              <img className={classes.image} src={post.headerImg} alt="dsd" />
+            ) : null}
+          </Link>
+        )}
+        {comment ? null : (
+          <Box padding="10px 20px 12px 20px" display="flex" alignItems="center">
+            <Link to={"/post/" + post.id} style={{ textDecoration: "none" }}>
+              <div className={classes.commentButton}>
+                <ChatBubbleOutlineIcon />
+                <Typography component="p">
+                  {` ${post.comments ? post.comments.length : null}`}
+                </Typography>
+              </div>
+            </Link>
+            {bookmarked ? (
+              <IconButton
+                onClick={() => onBookmarkedChange()}
+                size="small"
+                color="primary"
+                component="span"
+              >
+                <BookmarkIcon />
+              </IconButton>
+            ) : (
+              <IconButton
+                size="small"
+                component="span"
+                onClick={auth.isEmpty ? openModal : onBookmarkedChange}
+              >
+                <BookmarkBorderIcon />
+              </IconButton>
+            )}
+          </Box>
+        )}
       </Paper>
     </div>
   );
@@ -119,7 +151,10 @@ const PostSummary = ({ post, changeBookmark, profile }) => {
 const mapStateToProps = (state) => {
   return {
     profile: state.firebase.profile,
+    auth: state.firebase.auth,
   };
 };
 
-export default connect(mapStateToProps, { changeBookmark })(PostSummary);
+export default connect(mapStateToProps, { changeBookmark, openModal })(
+  PostSummary
+);

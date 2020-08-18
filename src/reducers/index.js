@@ -3,6 +3,17 @@ import { firebaseReducer } from "react-redux-firebase";
 import { firestoreReducer } from "redux-firestore";
 const initState = {};
 
+export const modalReducr = (state = false, action) => {
+  switch (action.type) {
+    case "OPEN_MODAL":
+      return action.payload;
+    case "CLOSE_MODAL":
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 export const authReducer = (state = { authError: null }, action) => {
   switch (action.type) {
     case "LOGIN_SUCCESS":
@@ -49,4 +60,5 @@ export default combineReducers({
   posts: postsReducer,
   firebase: firebaseReducer,
   firestore: firestoreReducer,
+  modalOpen: modalReducr,
 });

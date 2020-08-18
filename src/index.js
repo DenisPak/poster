@@ -29,6 +29,9 @@ const theme = createMuiTheme({
     h5: {
       fontWeight: 700,
     },
+    h4: {
+      fontWeight: 600,
+    },
   },
   zIndex: {
     modal: 1000,

@@ -11,7 +11,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Icon from "@material-ui/core/Icon";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import moment from "moment";
-
+import { Redirect } from "react-router-dom";
 //VERY MESSY, SEPARATE INTO SEVERAL COMPONENTS
 
 const useStyles = makeStyles((theme) => ({
@@ -130,7 +130,7 @@ const CreatePost = (props) => {
       optionImg: "https://img.icons8.com/office/16/000000/react.png",
     },
   ];
-  const options2 = ["yes", "no"];
+  if (!props.auth.uid) return <Redirect to="/" />;
   const createPost = () => {
     props.createPost({ title, content, header, headerImg, category });
     props.history.push("/");

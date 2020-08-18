@@ -2,12 +2,13 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
-import { signOut } from "../../actions";
+import { signOut, openModal, closeModal } from "../../actions";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +45,7 @@ const SignedInLinks = (props) => {
 
   const handleSignOut = () => {
     props.signOut();
+    props.closeModal();
     handleClose();
   };
 
@@ -60,7 +62,7 @@ const SignedInLinks = (props) => {
         onClick={handleMenu}
         color="inherit"
       >
-        <AccountCircle />
+        <AccountBoxIcon />
       </IconButton>
       <Menu
         style={{ zIndex: 2000 }}
@@ -77,12 +79,22 @@ const SignedInLinks = (props) => {
         open={open}
         onClose={handleClose}
       >
-        {/* will do this at some point
-        <MenuItem onClick={handleClose}>Profile</MenuItem> */}
+        <Link
+          to={`/profile/${props.auth.uid}`}
+          style={{ textDecoration: "none", color: "#000" }}
+        >
+          <MenuItem onClick={handleClose}>Profile</MenuItem>
+        </Link>
         <MenuItem onClick={handleSignOut}>Logout</MenuItem>
       </Menu>
     </div>
   );
 };
 
-export default connect(null, { signOut })(SignedInLinks);
+const mapStateToProps = (state) => {
+  return {
+    auth: state.firebase.auth,
+  };
+};
+
+export default connect(mapStateToProps, { signOut, closeModal })(SignedInLinks);

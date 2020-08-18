@@ -7,6 +7,7 @@ import Container from "@material-ui/core/Container";
 import { connect } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
 import moment from "moment";
+import { isLoaded, isEmpty } from "react-redux-firebase/lib/utils";
 
 import Comments from "./Comments";
 
@@ -47,12 +48,17 @@ const useStyles = makeStyles((theme) => ({
   },
   meta: {
     fontSize: "14px",
+    marginRight: "15px",
   },
 }));
 
 const Post = ({ post }) => {
   useFirestoreConnect([{ collection: "posts" }]);
+  console.log(post);
   const classes = useStyles();
+  // if (!isLoaded(post)) {
+  //   return <span>Loading...</span>;
+  // }
   return (
     <Container maxWidth="lg" className={classes.container}>
       {post ? (
@@ -63,10 +69,16 @@ const Post = ({ post }) => {
                 {post.category ? (
                   <>
                     <img src={post.category.optionImg} />
-                    {post.category.optionName}{" "}
+                    <span className={classes.meta}>
+                      {post.category.optionName}
+                    </span>
                   </>
                 ) : null}
-                {`${post.authorFirstName} ${post.authorLastName} `}
+                {
+                  <span className={classes.meta}>
+                    {`${post.authorFirstName} ${post.authorLastName} `}
+                  </span>
+                }
                 <span className={classes.date}>
                   {moment(post.createdAt.toDate()).calendar()}
                 </span>

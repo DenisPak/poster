@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -7,7 +7,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import { v4 } from "uuid";
 import { connect } from "react-redux";
 
-import { addComment } from "../../actions";
+import { addComment, openModal } from "../../actions";
 
 const Comments = (props) => {
   const [comment, setComment] = useState("");
@@ -26,6 +26,11 @@ const Comments = (props) => {
     });
   };
 
+  const handleUnsignedComment = () => {
+    document.activeElement.blur();
+    props.openModal();
+  };
+
   return (
     <div style={{ textAlign: "left", width: "100%" }}>
       <Typography component="h6" variant="h6">
@@ -38,6 +43,7 @@ const Comments = (props) => {
           variant="outlined"
           placeholder="Write your comment"
           value={comment}
+          onClick={handleUnsignedComment}
           onChange={(e) => setComment(e.target.value)}
           InputProps={{
             endAdornment: (
@@ -80,4 +86,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { addComment })(Comments);
+export default connect(mapStateToProps, { addComment, openModal })(Comments);

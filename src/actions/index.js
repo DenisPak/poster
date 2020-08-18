@@ -1,5 +1,18 @@
 import { firestore } from "firebase";
 
+export const openModal = () => {
+  return {
+    type: "OPEN_MODAL",
+    payload: true,
+  };
+};
+
+export const closeModal = () => {
+  return {
+    type: "CLOSE_MODAL",
+    payload: false,
+  };
+};
 export const signIn = (credentials) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
@@ -63,19 +76,23 @@ export const signUp = (newUser) => {
 export const signInWithProvider = (user) => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
+    console.log(user);
     firestore
-      .set(
-        { collection: "users", doc: user.user.uid },
-        {
-          firstName: user.additionalUserInfo.profile.given_name,
-          lastName: user.additionalUserInfo.profile.family_name,
-          initials:
-            user.additionalUserInfo.profile.given_name[0] +
-            user.additionalUserInfo.profile.family_name[0],
-          bookmarks: [],
-          comments: [],
-        }
-      )
+      .get({ collection: "users", doc: user.user.uid })
+      .then((user) => {
+        return firestore.set(
+          { collection: "users", doc: user.user.uid },
+          {
+            firstName: user.additionalUserInfo.profile.given_name,
+            lastName: user.additionalUserInfo.profile.family_name,
+            initials:
+              user.additionalUserInfo.profile.given_name[0] +
+              user.additionalUserInfo.profile.family_name[0],
+            bookmarks: [],
+            comments: [],
+          }
+        );
+      })
       .then(() => dispatch({ type: "LOGIN_SUCCESS" }))
       .catch((err) => {
         dispatch({ type: "LOGIN_ERROR", err });
@@ -119,12 +136,12 @@ export const addComment = (post, comment) => {
     firestore
       .update(
         { collection: "posts", doc: post.id },
-        { comments: [...post.comments, comment] }
+        { comments: [comment, ...post.comments] }
       )
       .then(() => {
         return firestore.update(
           { collection: "users", doc: comment.uid },
-          { comments: [...profile.comments, comment] }
+          { comments: [comment, ...profile.comments] }
         );
       })
       .then(() => {
