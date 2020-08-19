@@ -10,6 +10,7 @@ import Tab from "@material-ui/core/Tab";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { useFirestoreConnect } from "react-redux-firebase";
 
+import CreatedPosts from "./CreatedPosts";
 import Bookmarks from "./Bookmarks";
 import ProfileComments from "./ProfileComments";
 const AntTabs = withStyles({
@@ -58,8 +59,6 @@ const Profile = (props) => {
   const classes = useStyles();
 
   const uid = props.match.params.id;
-  // const user = props.users.find((user) => user.id === uid);
-  // console.log(user);
 
   return (
     <Container maxWidth="md">
@@ -85,6 +84,7 @@ const Profile = (props) => {
               onChange={(e, newValue) => setTab(newValue)}
               aria-label="disabled tabs example"
             >
+              <AntTab label="Created Posts" />
               <AntTab label="Bookmarks" />
               <AntTab label="Comments" />
             </AntTabs>
@@ -92,6 +92,13 @@ const Profile = (props) => {
         </Paper>
         {props.posts && props.users && props.auth ? (
           tab == 0 ? (
+            <CreatedPosts
+              posts={props.posts}
+              users={props.users}
+              auth={props.auth}
+              uid={uid}
+            />
+          ) : tab == 1 ? (
             <Bookmarks
               posts={props.posts}
               users={props.users}

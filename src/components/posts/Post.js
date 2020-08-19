@@ -66,7 +66,7 @@ const Post = ({ post }) => {
           <Paper elevation={0} className={`${classes.paper} ${classes.post}`}>
             <div className={classes.content}>
               <Typography className={classes.meta} component="p">
-                {post.category ? (
+                {post.category.optionName != "" ? (
                   <>
                     <img src={post.category.optionImg} />
                     <span className={classes.meta}>

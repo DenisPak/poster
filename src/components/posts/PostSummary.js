@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PostSummary = ({
-  post,
+  post = null,
   changeBookmark,
   profile,
   comment,
@@ -75,17 +75,21 @@ const PostSummary = ({
     changeBookmark(!bookmarked, post.id);
   };
   const classes = useStyles();
+  if (!post) {
+    return <div />;
+  }
   return (
     <div>
       <Paper elevation={0}>
         <Box padding="20px 20px 0 20px">
           <Typography className={classes.meta} component="p">
-            {post.category.optionName ? (
+            {post.category.optionName != "" ? (
               <span className={classes.category}>
                 <img src={post.category.optionImg} />
                 {post.category.optionName}{" "}
               </span>
             ) : null}
+
             {`${post.authorFirstName} ${post.authorLastName} `}
             <span className={classes.date}>
               {moment(post.createdAt.toDate()).calendar()}

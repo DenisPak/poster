@@ -27,7 +27,7 @@ const Comments = (props) => {
   };
 
   const handleUnsignedComment = () => {
-    document.activeElement.blur();
+    if (!props.auth.uid) document.activeElement.blur();
     props.openModal();
   };
 
@@ -61,6 +61,7 @@ const Comments = (props) => {
             style: {
               fontSize: 15,
               marginTop: "20px",
+              marginBottom: "20px",
             },
           }}
         />

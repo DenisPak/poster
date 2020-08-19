@@ -73,25 +73,28 @@ export const signUp = (newUser) => {
   };
 };
 
-export const signInWithProvider = (user) => {
+export const signInWithProvider = (profile) => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
-    console.log(user);
+    console.log(profile);
     firestore
-      .get({ collection: "users", doc: user.user.uid })
+      .get({ collection: "users", doc: profile.user.uid })
       .then((user) => {
-        return firestore.set(
-          { collection: "users", doc: user.user.uid },
-          {
-            firstName: user.additionalUserInfo.profile.given_name,
-            lastName: user.additionalUserInfo.profile.family_name,
-            initials:
-              user.additionalUserInfo.profile.given_name[0] +
-              user.additionalUserInfo.profile.family_name[0],
-            bookmarks: [],
-            comments: [],
-          }
-        );
+        console.log(user);
+        if (!user.exists) {
+          return firestore.set(
+            { collection: "users", doc: profile.user.uid },
+            {
+              firstName: profile.additionalUserInfo.profile.given_name,
+              lastName: profile.additionalUserInfo.profile.family_name,
+              initials:
+                profile.additionalUserInfo.profile.given_name[0] +
+                profile.additionalUserInfo.profile.family_name[0],
+              bookmarks: [],
+              comments: [],
+            }
+          );
+        }
       })
       .then(() => dispatch({ type: "LOGIN_SUCCESS" }))
       .catch((err) => {
@@ -104,6 +107,7 @@ export const createPost = (post) => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
     const profile = getState().firebase.profile;
+    console.log(profile);
     const authorId = getState().firebase.auth.uid;
     firestore
       .add("posts", {

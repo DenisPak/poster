@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   comment: {
     display: "flex",
     flexDirection: "column",
-    padding: "15px 0 0 0",
+    padding: "15px 0 15px 0",
   },
   commentHeader: {
     marginBottom: "15px",

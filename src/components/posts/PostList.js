@@ -12,6 +12,7 @@ const PostList = ({ posts, category }) => {
   if (category && posts) {
     posts = posts.filter((post) => post.category.optionName === category);
   }
+  console.log(posts);
   return (
     <>
       {posts
