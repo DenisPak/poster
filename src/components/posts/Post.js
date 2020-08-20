@@ -1,13 +1,12 @@
 import React from "react";
 import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
+
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { connect } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
 import moment from "moment";
-import { isLoaded, isEmpty } from "react-redux-firebase/lib/utils";
 
 import Comments from "./Comments";
 
@@ -54,11 +53,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Post = ({ post }) => {
   useFirestoreConnect([{ collection: "posts" }]);
-  console.log(post);
+
   const classes = useStyles();
-  // if (!isLoaded(post)) {
-  //   return <span>Loading...</span>;
-  // }
+
   return (
     <Container maxWidth="lg" className={classes.container}>
       {post ? (
@@ -66,9 +63,12 @@ const Post = ({ post }) => {
           <Paper elevation={0} className={`${classes.paper} ${classes.post}`}>
             <div className={classes.content}>
               <Typography className={classes.meta} component="p">
-                {post.category.optionName != "" ? (
+                {post.category.optionName !== "" ? (
                   <>
-                    <img src={post.category.optionImg} />
+                    <img
+                      src={post.category.optionImg}
+                      alt="post.category.optionName"
+                    />
                     <span className={classes.meta}>
                       {post.category.optionName}
                     </span>
@@ -107,7 +107,9 @@ const Post = ({ post }) => {
           </Paper>
         </>
       ) : (
-        "wait"
+        <Typography style={{ marginTop: "64px" }} component="p">
+          Post does not exist
+        </Typography>
       )}
     </Container>
   );
@@ -117,7 +119,7 @@ const mapStateToProps = (state, ownProps) => {
   if (state.firestore.ordered.posts) {
     return {
       post: state.firestore.ordered.posts.find(
-        (post) => post.id == ownProps.match.params.id
+        (post) => post.id === ownProps.match.params.id
       ),
     };
   } else return { post: null };

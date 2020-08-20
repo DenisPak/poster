@@ -17,11 +17,7 @@ const Bookmarks = ({ users, posts, auth, uid }) => {
         />
       );
     });
-  console.log(comments);
-  // const profileComments = posts
-  //   .filter((post) => comments.some((comment) => comment.postId === post.id))
-  //   .map((post) => <PostSummary post={post} key={comment.id} />);
-  // console.log(profileComments);
+
   return (
     <Box
       display="grid"

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -68,13 +68,7 @@ const Comments = (props) => {
       </form>
 
       {props.post.comments.map((comment) => {
-        return (
-          <Comment
-            key={comment.commentId}
-            comment={comment}
-            key={comment.commentId}
-          />
-        );
+        return <Comment key={comment.commentId} comment={comment} />;
       })}
     </div>
   );

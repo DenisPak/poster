@@ -10,7 +10,6 @@ const Bookmarks = ({ users, posts, auth, uid }) => {
   const bookmarks = posts
     .filter((post) => bookmarkIds.some((bookmarkId) => bookmarkId === post.id))
     .map((bookmark) => <PostSummary post={bookmark} key={bookmark.id} />);
-  console.log(bookmarks);
   return (
     <Box
       display="grid"

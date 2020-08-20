@@ -1,5 +1,3 @@
-import { firestore } from "firebase";
-
 export const openModal = () => {
   return {
     type: "OPEN_MODAL",
@@ -192,7 +190,9 @@ export const changeBookmark = (bookmarked, bookmarkId) => {
           { collection: "users", doc: uid },
           {
             bookmarks: [
-              ...profile.bookmarks.filter((bookmark) => bookmark != bookmarkId),
+              ...profile.bookmarks.filter(
+                (bookmark) => bookmark !== bookmarkId
+              ),
             ],
           }
         )

@@ -8,7 +8,6 @@ import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
 import { createPost } from "../../actions";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import Icon from "@material-ui/core/Icon";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import moment from "moment";
 import { Redirect } from "react-router-dom";
@@ -159,6 +158,7 @@ const CreatePost = (props) => {
                       <img
                         className={classes.adornment}
                         src={option.optionImg}
+                        alt={option.optionName}
                       />
                       {option.optionName}
                     </>

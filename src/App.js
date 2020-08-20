@@ -7,7 +7,6 @@ import Dashboard from "./components/posts/Dashboard";
 import Post from "./components/posts/Post";
 import Profile from "./components/posts/Profile";
 import CreatePost from "./components/posts/CreatePost";
-import { makeStyles } from "@material-ui/core/styles";
 
 const App = () => {
   return (

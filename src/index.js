@@ -3,14 +3,9 @@ import ReactDOM from "react-dom";
 import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
-import {
-  ReactReduxFirebaseProvider,
-  firebaseReducer,
-  getFirebase,
-} from "react-redux-firebase";
+import { ReactReduxFirebaseProvider, getFirebase } from "react-redux-firebase";
 import {
   createFirestoreInstance,
-  firestoreReducer,
   reduxFirestore,
   getFirestore,
 } from "redux-firestore";
@@ -21,9 +16,6 @@ import "./index.css";
 import App from "./App";
 import firebase, { firebaseConfig } from "./firebase";
 
-// const createStoreWithFirebase = compose(
-//   reduxFirestore(firebase) // firebase instance as first argument, rfConfig as optional second
-// )(createStore);
 const theme = createMuiTheme({
   typography: {
     h5: {

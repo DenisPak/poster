@@ -22,7 +22,7 @@ import jsImg from "../../images/js-30.png";
 import firebaseImg from "../../images/firebase-30.png";
 import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLinks";
-import { setCategory } from "../../actions";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -134,6 +134,7 @@ const Navbar = ({ auth, profile }) => {
               <ListItem button>
                 <ListItemIcon>
                   <img
+                    alt=""
                     src={
                       options.find((option) => option.optionName === text)
                         .optionImg

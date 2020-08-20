@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
-import { Link } from "react-router-dom";
 import PostSummary from "./PostSummary";
 
 const PostList = ({ posts, category }) => {
@@ -12,7 +11,7 @@ const PostList = ({ posts, category }) => {
   if (category && posts) {
     posts = posts.filter((post) => post.category.optionName === category);
   }
-  console.log(posts);
+
   return (
     <>
       {posts

@@ -1,9 +1,7 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
-import Paper from "@material-ui/core/Paper";
 
-import Notifications from "./Notifications";
 import PostList from "./PostList";
 const Dashboard = (props) => {
   return (

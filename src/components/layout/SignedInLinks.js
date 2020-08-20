@@ -8,7 +8,7 @@ import Menu from "@material-ui/core/Menu";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { signOut, openModal, closeModal } from "../../actions";
+import { signOut, closeModal } from "../../actions";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({

@@ -1,7 +1,6 @@
 import { combineReducers } from "redux";
 import { firebaseReducer } from "react-redux-firebase";
 import { firestoreReducer } from "redux-firestore";
-const initState = {};
 
 export const modalReducr = (state = false, action) => {
   switch (action.type) {

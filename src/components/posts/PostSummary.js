@@ -62,13 +62,13 @@ const PostSummary = ({
   useEffect(() => {
     if (
       profile.bookmarks &&
-      profile.bookmarks.some((bookmark) => post.id == bookmark)
+      profile.bookmarks.some((bookmark) => post.id === bookmark)
     ) {
       setBookmarked(true);
     } else {
       setBookmarked(false);
     }
-  }, [profile.bookmarks]);
+  }, [profile.bookmarks, post.id]);
 
   const onBookmarkedChange = () => {
     setBookmarked(!bookmarked);
@@ -83,9 +83,12 @@ const PostSummary = ({
       <Paper elevation={0}>
         <Box padding="20px 20px 0 20px">
           <Typography className={classes.meta} component="p">
-            {post.category.optionName != "" ? (
+            {post.category.optionName !== "" ? (
               <span className={classes.category}>
-                <img src={post.category.optionImg} />
+                <img
+                  src={post.category.optionImg}
+                  alt={post.category.optionName}
+                />
                 {post.category.optionName}{" "}
               </span>
             ) : null}

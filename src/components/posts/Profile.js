@@ -7,7 +7,7 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import Typography from "@material-ui/core/Typography";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { useFirestoreConnect } from "react-redux-firebase";
 
 import CreatedPosts from "./CreatedPosts";
@@ -44,21 +44,17 @@ const AntTab = withStyles((theme) => ({
   selected: {},
 }))((props) => <Tab disableRipple {...props} />);
 
-const useStyles = makeStyles((theme) => ({
-  profilePaper: {
-    padding: "10px",
-  },
-}));
-
-const Profile = (props) => {
+const Profile = ({ posts = null, users = null, auth = null, match }) => {
   useFirestoreConnect([
     { collection: "posts", orderBy: ["createdAt", "desc"] },
   ]);
   useFirestoreConnect([{ collection: "users" }]);
   const [tab, setTab] = useState(0);
-  const classes = useStyles();
 
-  const uid = props.match.params.id;
+  if (!posts || !users || !auth) return <div />;
+
+  const uid = match.params.id;
+  const user = users.find((user) => user.id === uid);
 
   return (
     <Container maxWidth="md">
@@ -71,45 +67,43 @@ const Profile = (props) => {
       >
         <Paper elevation={0}>
           <Box padding="10px">
-            <AccountBoxIcon style={{ fontSize: "50px" }} />
-            <Typography component="h4" variant="h4">
-              Pak Denis
-            </Typography>
+            {user ? (
+              <>
+                <AccountBoxIcon style={{ fontSize: "50px" }} />
+                <Typography component="h4" variant="h4">
+                  {`${user.firstName} ${user.lastName}`}
+                </Typography>
+              </>
+            ) : (
+              <Typography component="p">User does not exist</Typography>
+            )}
           </Box>
-          <div>
-            <AntTabs
-              value={tab}
-              indicatorColor="primary"
-              textColor="primary"
-              onChange={(e, newValue) => setTab(newValue)}
-              aria-label="disabled tabs example"
-            >
-              <AntTab label="Created Posts" />
-              <AntTab label="Bookmarks" />
-              <AntTab label="Comments" />
-            </AntTabs>
-          </div>
+          {user ? (
+            <div>
+              <AntTabs
+                value={tab}
+                indicatorColor="primary"
+                textColor="primary"
+                onChange={(e, newValue) => setTab(newValue)}
+                aria-label="disabled tabs example"
+              >
+                <AntTab label="Created Posts" />
+                <AntTab label="Bookmarks" />
+                <AntTab label="Comments" />
+              </AntTabs>
+            </div>
+          ) : null}
         </Paper>
-        {props.posts && props.users && props.auth ? (
-          tab == 0 ? (
-            <CreatedPosts
-              posts={props.posts}
-              users={props.users}
-              auth={props.auth}
-              uid={uid}
-            />
-          ) : tab == 1 ? (
-            <Bookmarks
-              posts={props.posts}
-              users={props.users}
-              auth={props.auth}
-              uid={uid}
-            />
+        {user ? (
+          tab === 0 ? (
+            <CreatedPosts posts={posts} users={users} auth={auth} uid={uid} />
+          ) : tab === 1 ? (
+            <Bookmarks posts={posts} users={users} auth={auth} uid={uid} />
           ) : (
             <ProfileComments
-              posts={props.posts}
-              users={props.users}
-              auth={props.auth}
+              posts={posts}
+              users={users}
+              auth={auth}
               uid={uid}
             />
           )

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
@@ -84,7 +83,6 @@ const SignedOutLinks = (props) => {
         props.signInWithProvider(profile),
     },
   };
-  console.log();
   const SignInModal = (
     <>
       <Typography component="h6" variant="h6">

@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Comment = ({ comment }) => {
   const classes = useStyles();
-  console.log(comment);
   return (
     <div className={classes.comment}>
       {comment ? (
