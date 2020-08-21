@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { connect } from "react-redux";
+import { NavLink } from "react-router-dom";
 
 import firebase from "../../firebase";
 import SignIn from "../auth/SignIn";
@@ -51,6 +52,10 @@ const useStyles = makeStyles((theme) => ({
   },
   label: {
     justifyContent: "flex-start",
+  },
+  createLink: {
+    color: "#fff",
+    textDecoration: "none",
   },
 }));
 
@@ -103,6 +108,12 @@ const SignedOutLinks = (props) => {
   );
   return (
     <div>
+      <Button
+        color="inherit"
+        onClick={props.auth.isEmpty ? props.openModal : ""}
+      >
+        Create Post
+      </Button>
       <Button color="inherit" onClick={props.openModal}>
         Signin
       </Button>
@@ -136,6 +147,7 @@ const SignedOutLinks = (props) => {
 const mapStateToProps = (state) => {
   return {
     modalOpen: state.modalOpen,
+    auth: state.firebase.auth,
   };
 };
 
