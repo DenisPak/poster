@@ -128,6 +128,10 @@ const CreatePost = (props) => {
       optionName: "React",
       optionImg: "https://img.icons8.com/office/16/000000/react.png",
     },
+    {
+      optionName: "Firebase",
+      optionImg: "https://img.icons8.com/color/16/000000/firebase.png",
+    },
   ];
   if (!props.auth.uid) return <Redirect to="/" />;
   const createPost = () => {
