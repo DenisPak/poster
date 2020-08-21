@@ -48,6 +48,13 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.primary.light,
     },
   },
+  link: {
+    color: "#000",
+    textDecoration: "none",
+    "&:hover": {
+      color: theme.palette.primary.light,
+    },
+  },
 }));
 
 const PostSummary = ({
@@ -92,8 +99,9 @@ const PostSummary = ({
                 {post.category.optionName}{" "}
               </span>
             ) : null}
-
-            {`${post.authorFirstName} ${post.authorLastName} `}
+            <Link to={`/profile/${post.authorId}`} className={classes.link}>
+              {`${post.authorFirstName} ${post.authorLastName} `}
+            </Link>
             <span className={classes.date}>
               {moment(post.createdAt.toDate()).calendar()}
             </span>

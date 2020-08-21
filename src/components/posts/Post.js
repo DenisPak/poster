@@ -7,6 +7,7 @@ import Container from "@material-ui/core/Container";
 import { connect } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 import Comments from "./Comments";
 
@@ -49,6 +50,13 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "14px",
     marginRight: "15px",
   },
+  link: {
+    color: "#000",
+    textDecoration: "none",
+    "&:hover": {
+      color: theme.palette.primary.light,
+    },
+  },
 }));
 
 const Post = ({ post }) => {
@@ -76,7 +84,12 @@ const Post = ({ post }) => {
                 ) : null}
                 {
                   <span className={classes.meta}>
-                    {`${post.authorFirstName} ${post.authorLastName} `}
+                    <Link
+                      to={`/profile/${post.authorId}`}
+                      className={classes.link}
+                    >
+                      {`${post.authorFirstName} ${post.authorLastName} `}
+                    </Link>
                   </span>
                 }
                 <span className={classes.date}>
